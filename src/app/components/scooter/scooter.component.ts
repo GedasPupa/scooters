@@ -12,25 +12,48 @@ import { IScooter } from 'src/app/models/Scooter';
 
 @Component({
   selector: 'app-scooter',
-  templateUrl: './scooter.component.html',
+  template:`
+  <form #updateScooter="ngForm">
+    <span>{{scooterFromParent.name}}</span>
+    <div>
+      <label for="busy" id="for_busy">{{scooterFromParent.busy ? "užimtas": "laisvas"}}</label>
+      <input type="checkbox" #check="ngModel" name="busy" id="busy" [(ngModel)]="scooterFromParent.busy" ngModel>
+    </div>
+    <label for="last_use" id="for_last_use">{{scooterFromParent.last_use | date}}</label>
+    <div><input type="date" #dateInput="ngModel" name="last_use" id="last_use"  [(ngModel)]="today" max={{maxToday}}><br><span *ngIf="dateInput.invalid">Not Valid</span></div>
+    <label for="total_ride" id="for_total_ride">{{scooterFromParent.total_ride}}</label>
+    <div><input type="number" #kmInput="ngModel" name="total_ride" id="total_ride" min="0" max="9999.99" [(ngModel)]="kmInp"><br><span *ngIf="kmInput.invalid" style="color: salmon;">Not valid</span></div>
+    <div>
+      <button type="submit" (click)="onUpdate()" class="btn btn-warning action">Update</button>
+      <button type="button" (click)="onDelete(scooterFromParent.id)" class="btn btn-danger action">DELETE</button>
+    </div>
+  </form>
+  <hr>
+  `,
   styleUrls: ['./scooter.component.css'],
 })
 export class ScooterComponent implements OnInit {
   @Input() scooterFromParent!: IScooter;
   @Output() onDelFromChild: EventEmitter<number> = new EventEmitter<number>();
   date!: string;
+  maxToday: string;
   today: string = new Date().toISOString().slice(0, 10);
   scooter!: IScooter;
+  kmInp: number | string = '';
 
   @ViewChild('updateScooter') updateScooter!: NgForm;
   @ViewChild('check') check!: NgForm;
   @ViewChild('dateInput') dateInput!: NgForm;
   @ViewChild('kmInput') kmInput!: NgForm;
 
-  constructor(private _scootersService: ScootersService) {}
+  constructor(private _scootersService: ScootersService) {
+    this.maxToday = this.today;
+  }
 
   ngOnInit(): void {
-    this.date = new Date(this.scooterFromParent.last_use).toISOString().slice(0,10);
+    this.date = new Date(this.scooterFromParent.last_use)
+      .toISOString()
+      .slice(0, 10);
   }
 
   onUpdate(): void {
@@ -45,28 +68,15 @@ export class ScooterComponent implements OnInit {
       this._scootersService.updateScooter(this.scooterFromParent).subscribe(
         (res) => {
           alert(`Scooter ${this.scooterFromParent.name} successfully updated!`);
-          // this._router.navigate([`/scooters/${this.scooter.id}`]);
+          this.today = this.maxToday;
+          this.kmInp = '';
         },
         (err) => console.log(err)
       );
-    } else {
-      // this.formValid = false;
     }
   }
 
   onDelete(id: number): void {
     this.onDelFromChild.emit(id);
   }
-  //   this._scootersService.deleteScooter(id).subscribe(
-  //     (res) => {
-  //       alert(
-  //         `Cow ${this.scooter.name} successfully deleted from DB!`
-  //       );
-  //       // this._router.navigate(['/scooters']);
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //     }
-  //   );
-  // }
 }

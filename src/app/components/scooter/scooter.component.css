@@ -1,10 +1,29 @@
 form {
   display: flex;
   justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
 }
-label {
-  width: 100px;
+#for_busy {
+  width: 70px;
+  text-align: center;
 }
 #last_use {
-  width: 150px;
+  width: 140px;
+}
+#total_ride {
+  width: 70px;
+}
+#for_total_ride {
+  width: 80px;
+  text-align: center;
+  font-weight: 500;
+}
+span {
+  font-weight: 500;
+}
+.btn.action {
+  padding: 2px 7px;
+  margin-right: 15px;
+  font-weight: 600;
 }

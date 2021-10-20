@@ -6,7 +6,79 @@ import { ScootersService } from 'src/app/services/scooters.service';
 
 @Component({
   selector: 'app-scooters',
-  templateUrl: './scooters.component.html',
+  template: `
+  <form #newScooter="ngForm" class="newScooter">
+    <h5>Pridėk naują paspirtuką:</h5>
+    <p *ngIf="newScooter.invalid && newScooter.submitted" class="alert alert-danger">
+      The form is not valid. Please check all fields!
+    </p>
+    <div>Registracijos numeris: <input type="text" #regNumeris="ngModel" ngModel name="name" required minlength="8" maxlength="8"/>
+      <span class="alert alert-warning" *ngIf="regNumeris.invalid && newScooter.submitted">Not valid</span>
+    </div>
+    <div>
+      Paskutinis naudojimas:
+      <input
+        type="date"
+        max={{today}}
+        [(ngModel)]="today"
+        name="last_use"
+        required
+      />
+    </div>
+    <div>
+      Viso km:
+      <input
+        type="number"
+        min="0"
+        max="9999.99"
+        #visoKm="ngModel"
+        ngModel
+        name="total_ride"
+        required
+      />
+      <span class="alert alert-warning" *ngIf="visoKm.invalid && newScooter.submitted">Not valid</span>
+    </div>
+    <button type="submit" (click)="addScooter()" class="btn btn-success">Pridėti</button>
+  </form>
+
+  <div class="statistika">
+    <h5>Statistika:</h5>
+    <p>Iš viso paspirtukų: {{total_records}}</p>
+    <p>Iš viso kilometrų: {{total_kilometers}}</p>
+  </div>
+
+  <div class="filter">
+    <h5>Filtras:</h5>
+    <div>
+      <label>Find scooter by name:</label>
+      <input type="text" (input)="onFilter($event)" class="filter-input"/>
+    </div>
+    <div>
+      <button (click)="onSort('total_ride')" class="btn btn-primary">Rūšiuoti pagal KM</button>
+      <button (click)="onSort('last_use')" class="btn btn-secondary">Rūšiuoti pagal DATĄ</button>
+    </div>
+  </div>
+
+  <table class="table table-success">
+    <thead>
+      <tr>
+        <th style="width: 10px">Nr.</th>
+        <th>Vardas</th>
+        <th>Užimtumas</th>
+        <th >Data</th>
+        <th>Nauja Data</th>
+        <th style="text-align: center;">Km</th>
+        <th style="text-align: center;">Plius Km</th>
+        <th >Veiksmai</th>
+      </tr>
+    </thead>
+  </table>
+  <ol>
+    <li *ngFor="let s of filteredScooters">
+      <app-scooter [scooterFromParent]="s" (onDelFromChild)="onDelete($event)"></app-scooter>
+    </li>
+  </ol>
+  `,
   styleUrls: ['./scooters.component.css'],
 })
 export class ScootersComponent implements OnInit {
@@ -27,6 +99,7 @@ export class ScootersComponent implements OnInit {
   today: string = new Date().toISOString().slice(0, 10);
 
   @ViewChild('newScooter') newScooter!: NgForm;
+  @ViewChild('regNumeris') regNumeris!: NgForm;
 
   ngOnInit() {
     if (this.stateError) {
