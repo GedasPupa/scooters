@@ -28,7 +28,7 @@ import { ScooterComponent } from './components/scooter/scooter.component';
       { path: '', component: HomeComponent },
       { path: 'scooters', component: ScootersComponent },
       { path: 'scooters/:id', component: ScooterComponent },
-      { path: 'add', component: ScooterComponent },
+      { path: 'add', component: HomeComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
     ]),
   ],

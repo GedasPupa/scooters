@@ -1,0 +1,10 @@
+form {
+  display: flex;
+  justify-content: space-around;
+}
+label {
+  width: 100px;
+}
+#last_use {
+  width: 150px;
+}
