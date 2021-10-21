@@ -226,9 +226,9 @@ export class ScootersTableComponent implements OnInit {
   }
 
   onUpdate(scooter: IScooter): void {
-    if (this.kmInput.valid) {
+    if (this.kmInput.valid && scooter.extra != undefined) {
       let temp_total_ride = scooter.total_ride;
-      scooter.total_ride += scooter.extra;  
+      scooter.total_ride += scooter.extra;
       
       this._scootersService.updateScooter(scooter).subscribe(
         res => {
