@@ -10,6 +10,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { ScootersComponent } from './components/scooters/scooters.component';
 import { ScooterComponent } from './components/scooter/scooter.component';
+import { ScootersTableComponent } from './components/scooters-table/scooters-table.component';
+import { ScooterTableComponent } from './components/scooter-table/scooter-table.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { ScooterComponent } from './components/scooter/scooter.component';
     HomeComponent,
     ScootersComponent,
     ScooterComponent,
+    ScootersTableComponent,
+    ScooterTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +32,7 @@ import { ScooterComponent } from './components/scooter/scooter.component';
       { path: '', component: HomeComponent },
       { path: 'scooters', component: ScootersComponent },
       { path: 'scooters/:id', component: ScooterComponent },
-      { path: 'add', component: HomeComponent },
+      { path: 'scooters-table', component: ScootersTableComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
     ]),
   ],

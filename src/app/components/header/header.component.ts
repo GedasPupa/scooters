@@ -30,8 +30,8 @@ import { Component, OnInit } from '@angular/core';
             <a
               class="nav-link nav-a"
               [routerLinkActive]="['active']"
-              [routerLink]="['/add']"
-              >Add</a
+              [routerLink]="['/scooters-table']"
+              >Table</a
             >
           </li>
         </ul>
